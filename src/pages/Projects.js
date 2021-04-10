@@ -113,7 +113,9 @@ export default function Dash() {
                       secondary={project.description}
                     />
                     <ListItemSecondaryAction>
-                      <IconButton edge="start" aria-label="view">
+                      <IconButton edge="start" aria-label="view" onClick={() => {
+                        history.push(`/projects/${project.name}`);
+                      }}>
                         <VisibilityOutlinedIcon />
                       </IconButton>
                       <IconButton edge="end" aria-label="create" onClick={() => {
