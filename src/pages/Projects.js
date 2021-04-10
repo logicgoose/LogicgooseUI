@@ -22,6 +22,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 
+import { useHistory } from 'react-router';
+
 const modalStyle = {
   top: `30%`,
   left: `50%`,
@@ -40,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dash() {
+  const history = useHistory();
   const classes = useStyles();
 
   /** @type {[{name: string, endpoint: string}[], Function]} */
@@ -102,7 +105,9 @@ export default function Dash() {
                       <IconButton edge="start" aria-label="view">
                         <VisibilityOutlinedIcon />
                       </IconButton>
-                      <IconButton edge="end" aria-label="create">
+                      <IconButton edge="end" aria-label="create" onClick={() => {
+                        history.push(`/projects/${project.name}/create`);
+                      }}>
                         <AddCircleOutlineOutlinedIcon />
                       </IconButton>
                     </ListItemSecondaryAction>

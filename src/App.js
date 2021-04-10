@@ -10,6 +10,7 @@ import Layout from './components-custom/Layout';
 
 import LoginPage from './pages/Login.js';
 import ProjectsPage from './pages/Projects.js';
+import CreateAPIPage from './pages/CreateAPI.js';
 
 export default function App() {
   return (
@@ -19,6 +20,9 @@ export default function App() {
           <Switch>
             <PrivateRoute exact path="/projects">
               <ProjectsPage />
+            </PrivateRoute>
+            <PrivateRoute path="/projects/:project/create">
+              <CreateAPIPage />
             </PrivateRoute>
             <Route exact path="/">
               <LoginPage />
