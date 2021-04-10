@@ -12,6 +12,13 @@ import LoginPage from './pages/Login.js';
 import ProjectsPage from './pages/Projects.js';
 import CreateAPIPage from './pages/CreateAPI.js';
 
+const JWT_KEY = `jwt`;
+var API = ``;
+
+if (process.env.NODE_ENV === 'development') {
+  API = `http://localhost:5000`;
+}
+
 export default function App() {
   return (
     <ProvideAuth>
@@ -58,9 +65,27 @@ function useProvideAuth() {
    * @param {Function} cb 
    * @returns 
    */
-  const signin = (data, cb) => {
-    setUser(data.username);
-    cb(true);
+  const signin = async (data, cb) => {
+    const requestOptions = {
+      method: `POST`,
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    };
+
+    try {
+      const result = await (fetch(`${API}/lg/user/login`, requestOptions).then(res => res.json()));
+      
+      localStorage.setItem(JWT_KEY, result.token);
+      setUser(data.username);
+      cb(result.auth); //True or false
+
+    } catch (e) {
+      localStorage.removeItem(JWT_KEY);
+      setUser(null);
+      cb(false);
+    }
   };
 
   /**
@@ -69,19 +94,63 @@ function useProvideAuth() {
    * @param {any} [data] 
    * @returns 
    */
-  const send = (endpoint, data) => {
-    return realData.send(endpoint, data)
-    .then((result) => Promise.resolve(result))
-    .catch((error) => {
-      console.log('error!', error);
-      setError(error);
-    });
+  const send = async (endpoint, data) => {
+    const token = localStorage.getItem(JWT_KEY);
+
+    if (token) {
+      const requestOptions = {
+        method: (data ? 'POST' : 'GET'),
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: (data ? JSON.stringify(data) : undefined)
+      };
+
+      try {
+        const result = await (fetch(`${API}${endpoint}`, requestOptions).then(res => res.json()));
+        return result;
+
+      } catch (e) {
+        //Handle if not authenticated (401) here?
+        throw new Error("Error with API.");
+      }
+    } else {
+      throw new Error("Not authenticated.");
+    }
   };
+
+  const isLoggedIn = async () => {
+    console.log({user});
+    if (user) {
+      return true;
+
+    } else {
+      try {
+        const result = await send("/lg/user");
+        console.log({result});
+        const {username} = result;
+
+        if (username) {
+          setUser(username);
+          return true;
+        } else {
+          return false;
+        }
+
+
+      } catch (e) {
+        console.log(e);
+        return false;
+      }
+    }
+  }
 
   return {
     user,
     setUser,
     signin,
+    isLoggedIn,
     send
   }
 }
@@ -91,10 +160,10 @@ function useProvideAuth() {
 function PrivateRoute({ children, ...rest }) {
   let auth = useAuth();
 
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    if (auth.user !== null) setLoading(false)
+    auth.isLoggedIn().then(result => {setLoading(false)});
   }, [])
 
   return loading
