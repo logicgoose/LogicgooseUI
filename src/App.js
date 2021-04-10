@@ -121,14 +121,12 @@ function useProvideAuth() {
   };
 
   const isLoggedIn = async () => {
-    console.log({user});
     if (user) {
       return true;
 
     } else {
       try {
         const result = await send("/lg/user");
-        console.log({result});
         const {username} = result;
 
         if (username) {
@@ -140,7 +138,6 @@ function useProvideAuth() {
 
 
       } catch (e) {
-        console.log(e);
         return false;
       }
     }

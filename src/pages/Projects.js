@@ -22,6 +22,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 
+import { useAuth } from '../App';
 import { useHistory } from 'react-router';
 
 const modalStyle = {
@@ -44,42 +45,52 @@ const useStyles = makeStyles((theme) => ({
 export default function Dash() {
   const history = useHistory();
   const classes = useStyles();
+  let auth = useAuth();
 
-  /** @type {[{name: string, endpoint: string}[], Function]} */
+  /** @type {[{name: string, description: string}[], Function]} */
   const [projects, setProjects] = React.useState([]);
   const [projectModalOpen, setProjectModalOpen] = React.useState(false);
 
   const [nameHelperText, setNameHelperText] = React.useState('');
-  const [endpointHelperText, setEndpointHelperText] = React.useState('');
 
-  const formSubmit = (event) => {
+  const newProjectSubmit = async (event) => {
     event.preventDefault();
 
     const newProject = {
       name: event.target.projectname.value,
-      endpoint: event.target.endpoint.value
+      description: event.target.description.value
     };
 
-    //TODO: Send request to create the endpoint
-    setProjects([
-      ...projects,
-      newProject
-    ]);
+    try {
+      const result = await auth.send(`/lg/projects/new`, newProject);
 
-    setProjectModalOpen(false);
+      if (result.success) {
+        setProjects([
+          ...projects,
+          newProject
+        ]);
+    
+        setProjectModalOpen(false);
+      } else {
+        console.log(result);
+      }
+
+
+    } catch (e) {
+      console.log(e);
+      //TODO: error of somekind?
+    }
   }
 
-  const fetchProjects = () => {
-    setProjects([]);
+  const fetchProjects = async () => {
+    const result = await auth.send(`/lg/projects`);
+    setProjects(result);
   }
 
   React.useEffect(() => {
-    console.log(`Use effect`);
     fetchProjects();
     setNameHelperText(`Cannot be blank.`);
   }, []);
-  
-  console.log(projects);
 
   return (
     <React.Fragment>
@@ -99,7 +110,7 @@ export default function Dash() {
                     </ListItemAvatar>
                     <ListItemText
                       primary={project.name}
-                      secondary={project.endpoint}
+                      secondary={project.description}
                     />
                     <ListItemSecondaryAction>
                       <IconButton edge="start" aria-label="view">
@@ -121,12 +132,15 @@ export default function Dash() {
             <Box py={8} textAlign="center">
               <Typography variant="h3" component="h2" gutterBottom={true}>You have no projects!</Typography>
               <Typography variant="h5" color="textSecondary">A project is just a group of APIs that call your programs.</Typography>
-              <Box mt={4}>
-                <Button onClick={() => setProjectModalOpen(true)} variant="contained" size="large" color="primary">Create your first project</Button>
-              </Box>
             </Box>
           </section>
       }
+
+      <Box textAlign="center">
+        <Box mt={2}>
+          <Button onClick={() => setProjectModalOpen(true)} variant="contained" size="large" color="primary">Create a project</Button>
+        </Box>
+      </Box>
 
       <Modal
         open={projectModalOpen}
@@ -139,7 +153,7 @@ export default function Dash() {
           <p id="simple-modal-description">
             Congratulations! You're creating a project! A project is just a collection of APIs. Nice and easy.
           </p>
-          <form noValidate onSubmit={formSubmit}>
+          <form noValidate onSubmit={newProjectSubmit}>
             <Grid container spacing={2}>
 
               <Grid item xs={12}>
@@ -167,28 +181,17 @@ export default function Dash() {
                 <TextField 
                   variant="outlined" 
                   required fullWidth 
-                  name="endpoint" 
-                  id="endpoint" 
-                  label="Endpoint" 
+                  name="description" 
+                  id="description" 
+                  label="Description" 
                   defaultValue=""
-                  helperText={endpointHelperText}
-                  onChange={(event) => {
-                    setEndpointHelperText(``);
-                    const value = event.target.value.trim();
-
-                    if (!value.startsWith(`/`))
-                      setEndpointHelperText(`Must start with a forward slash.`);
-
-                    if (value.endsWith(`/`))
-                      setEndpointHelperText(`Cannot end with a forward slash.`);
-                  }}
                 />
               </Grid>
 
             </Grid>
             <Box my={2}>
               <Button
-               disabled={nameHelperText !== "" || endpointHelperText !== ""} type="submit" fullWidth variant="contained" color="primary">
+               disabled={nameHelperText !== ""} type="submit" fullWidth variant="contained" color="primary">
                 Create
               </Button>
             </Box>
