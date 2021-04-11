@@ -10,8 +10,9 @@ import Layout from './components-custom/Layout';
 
 import LoginPage from './pages/Login.js';
 import ProjectsPage from './pages/Projects.js';
-import APIPage from './pages/APIs.js';
+import APIsPage from './pages/APIs.js';
 import CreateAPIPage from './pages/CreateAPI.js';
+import APIPage from './pages/API.js';
 
 const JWT_KEY = `jwt`;
 var API = ``;
@@ -30,10 +31,13 @@ export default function App() {
               <ProjectsPage />
             </PrivateRoute>
             <PrivateRoute exact path="/projects/:project">
-              <APIPage />
+              <APIsPage />
             </PrivateRoute>
             <PrivateRoute exact path="/projects/:project/create">
               <CreateAPIPage />
+            </PrivateRoute>
+            <PrivateRoute path="/projects/:project/:api">
+              <APIPage />
             </PrivateRoute>
             <Route path="/">
               <LoginPage />

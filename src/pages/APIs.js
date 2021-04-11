@@ -18,9 +18,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 
 import IconButton from '@material-ui/core/IconButton';
+import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { useAuth } from '../App';
 import { useHistory } from 'react-router';
@@ -49,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
     backgroundColor: green[500],
   },
+  backButton: {
+    marginBottom: '0.1em',
+    marginRight: '1em'
+  },
 }));
 
 export default function Dash() {
@@ -76,14 +82,19 @@ export default function Dash() {
         APIs.length > 0
         ?
           <React.Fragment>
-            <Typography variant="h4" component="h4" gutterBottom={true}>Projects</Typography>
+            <Typography variant="h4" component="h4" gutterBottom={true}>
+              <IconButton className={classes.backButton} onClick={() => history.goBack()}>
+                <ArrowBackIcon />
+              </IconButton>
+              {project} APIs
+            </Typography>
             <div>
               <List>
                 {APIs.map(api => (
                   <ListItem>
                     <ListItemAvatar>
                       <Avatar className={api.enabled ? classes.green : classes.pink}>
-                        <FolderIcon />
+                        <SettingsEthernetIcon />
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
@@ -91,7 +102,9 @@ export default function Dash() {
                       secondary={`${api.description} - ${api.method.toUpperCase()} ${api.endpoint}`}
                     />
                     <ListItemSecondaryAction>
-                      <IconButton edge="start" aria-label="view">
+                      <IconButton edge="start" aria-label="view" onClick={() => {
+                        history.push(`/projects/${project}/${api.name}`);
+                      }}>
                         <VisibilityOutlinedIcon />
                       </IconButton>
                       <IconButton edge="end" aria-label="delete">
