@@ -362,9 +362,20 @@ export default function CreateAPI() {
                 >
                   Back
                 </Button>
-                <Button variant="contained" color="primary" onClick={handleNext}>
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
+                
+                {
+                  activeStep === steps.length - 1 
+                  ? 
+                  <Button disabled={Object.values(errors).find(error => error !== undefined)} variant="contained" color="primary" onClick={handleNext}>
+                    Finish
+                  </Button>
+                  : 
+                  <Button variant="contained" color="primary" onClick={handleNext}>
+                    Next
+                  </Button>
+                }
+                
+
               </Box>
             </Box>
           </Paper>
