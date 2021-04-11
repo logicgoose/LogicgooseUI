@@ -84,7 +84,7 @@ export default function Index() {
 
 
             <Typography variant="h5" component="h5" gutterBottom={true}>
-              <IconButton className={classes.backButton} onClick={() => history.goBack()}>
+              <IconButton className={classes.backButton} onClick={() => history.push(`/projects/${project}`)}>
                 <ArrowBackIcon />
               </IconButton>
               {api} API

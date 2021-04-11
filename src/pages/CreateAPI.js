@@ -352,6 +352,14 @@ export default function CreateAPI() {
                   <ConfirmListItem left="Stored procedure path" right={`${fields.schema}.${fields.procedure}`} />
                   <ConfirmListItem left="Program path" right={`${fields.library}.${fields.program}`} />
                 </List>
+
+                <Box mt={3} />
+
+                <Typography variant="h5" gutterBottom>
+                  What's next?
+                </Typography>
+
+                <Typography className={classes.instructions}>After you have finished this process you will need to create the stored procedure and program yourself - but we've done all the work for you! When you view an API, you will see the base source and stored procedure code.</Typography>
               </IsActive>
 
               <Box className={classes.centerBox}>
