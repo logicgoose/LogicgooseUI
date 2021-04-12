@@ -19,7 +19,7 @@ import Avatar from '@material-ui/core/Avatar';
 
 import IconButton from '@material-ui/core/IconButton';
 import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
-import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -99,16 +99,18 @@ export default function Dash() {
                     </ListItemAvatar>
                     <ListItemText
                       primary={api.name}
-                      secondary={`${api.description} - ${api.method.toUpperCase()} ${api.endpoint}`}
+                      secondary={`${api.method.toUpperCase()} ${api.endpoint} - ${api.description}`}
                     />
                     <ListItemSecondaryAction>
-                      <IconButton edge="start" aria-label="view" onClick={() => {
+                      <IconButton edge="start" aria-label="edit" onClick={() => {
+                        history.push(`/projects/${project}/${api.name}/edit`);
+                      }}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton edge="end" aria-label="view" onClick={() => {
                         history.push(`/projects/${project}/${api.name}`);
                       }}>
                         <VisibilityOutlinedIcon />
-                      </IconButton>
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon />
                       </IconButton>
                     </ListItemSecondaryAction>
                   </ListItem>

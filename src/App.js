@@ -13,6 +13,7 @@ import ProjectsPage from './pages/Projects.js';
 import APIsPage from './pages/APIs.js';
 import CreateAPIPage from './pages/CreateAPI.js';
 import APIPage from './pages/API.js';
+import APIEditPage from './pages/APIEdit.js';
 
 const JWT_KEY = `jwt`;
 var API = ``;
@@ -35,6 +36,9 @@ export default function App() {
             </PrivateRoute>
             <PrivateRoute exact path="/projects/:project/create">
               <CreateAPIPage />
+            </PrivateRoute>
+            <PrivateRoute exact path="/projects/:project/:api/edit">
+              <APIEditPage />
             </PrivateRoute>
             <PrivateRoute path="/projects/:project/:api">
               <APIPage />
