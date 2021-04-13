@@ -16,6 +16,7 @@ import { useHistory } from 'react-router';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import AppsIcon from '@material-ui/icons/Apps';
+import DataUsageIcon from '@material-ui/icons/DataUsage';
 
 import { useAuth } from '../App';
 
@@ -95,6 +96,7 @@ export default function Component(props) {
   <Drawer anchor="left" open={state.open} onClose={toggleDrawer(false)}>
     <div className={classes.drawerContainer}>
       <List>
+
         <ListItem button key="Projects" onClick={() => {
           closeDrawer();
           history.push(`/projects`);
@@ -104,6 +106,17 @@ export default function Component(props) {
           </ListItemIcon>
           <ListItemText primary="Projects" />
         </ListItem>
+
+        <ListItem button key="Logging" onClick={() => {
+          closeDrawer();
+          history.push(`/Logging`);
+        }}>
+          <ListItemIcon>
+            <DataUsageIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logging" />
+        </ListItem>
+        
       </List>
     </div>
   </Drawer>
