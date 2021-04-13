@@ -98,7 +98,7 @@ export default function Index() {
 
   const [loading, setLoading] = React.useState(true);
 
-  const [stats, setStats] = React.useState();
+  const [stats, setStats] = React.useState(null);
 
   const [status, setStatus] = React.useState({
     database: false,
@@ -275,101 +275,107 @@ export default function Index() {
         </IsActive>
 
         <IsActive value={activeView} shouldBe={2}>
-          <Container maxWidth="lg">
-            <Grid container spacing={3}>
+          {
+            stats
+            ?
+              <Container maxWidth="lg">
+                <Grid container spacing={3}>
 
-              <Grid item xs={6}>
-                <Paper className={classes.paper}>
-                  <Typography variant="h5" gutterBottom>API Totals</Typography>
-                  <ResponsiveContainer width={"100%"} height={400}>
-                    <RadialBarChart 
-                      innerRadius="20%" 
-                      outerRadius="80%" 
-                      data={[{name: "total", count: stats.base.total, fill: "grey"}, {name: "succesful", count: stats.base.successful, fill: "#32a86f"}, {name: "errored", count: stats.base.errored, fill: "#a83246"}]} 
-                      startAngle={0} 
-                      endAngle={360}
-                    >
-                      <RadialBar label={{ fill: '#666', position: 'insideStart' }} background clockWise={true} dataKey='count' />
-                      <Legend iconSize={10} width={120} height={140} layout='centric' verticalAlign='top' align="center" />
-                      <Tooltip />
-                    </RadialBarChart>
-                  </ResponsiveContainer>
-                </Paper>
-              </Grid>
-              <Grid item xs={6}>
-                <Paper className={classes.paper}>
-                  <Typography variant="h5" gutterBottom>APIs by day</Typography>
-                  <ResponsiveContainer width={"100%"} height={400}>
-                    <BarChart
-                      data={stats.successfulCountByDays.map(api => ({name: api.date, amt: api.count, count: api.count, "average response time": api.average_response_time}))}
-                      margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                      }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="count" fill="#32a86f" />
-                      <Bar dataKey="average response time" fill="#c9960a" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </Paper>
-              </Grid>
-              
-              <Grid item xs={6}>
-                <Paper className={classes.paper}>
-                  <Typography variant="h5" gutterBottom>Most successful</Typography>
-                  <ResponsiveContainer width={"100%"} height={400}>
-                    <BarChart
-                      data={stats.successfulAPIs.map(api => ({name: `${api.method} ${api.baseURL}`, amt: api.count, successful: api.count, avg: api.average_response_time}))}
-                      margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                      }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="successful" fill="#32a86f" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </Paper>
-              </Grid>
+                  <Grid item xs={6}>
+                    <Paper className={classes.paper}>
+                      <Typography variant="h5" gutterBottom>API Totals</Typography>
+                      <ResponsiveContainer width={"100%"} height={400}>
+                        <RadialBarChart 
+                          innerRadius="20%" 
+                          outerRadius="80%" 
+                          data={[{name: "total", count: stats.base.total, fill: "grey"}, {name: "succesful", count: stats.base.successful, fill: "#32a86f"}, {name: "errored", count: stats.base.errored, fill: "#a83246"}]} 
+                          startAngle={0} 
+                          endAngle={360}
+                        >
+                          <RadialBar label={{ fill: '#666', position: 'insideStart' }} background clockWise={true} dataKey='count' />
+                          <Legend iconSize={10} width={120} height={140} layout='centric' verticalAlign='top' align="center" />
+                          <Tooltip />
+                        </RadialBarChart>
+                      </ResponsiveContainer>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Paper className={classes.paper}>
+                      <Typography variant="h5" gutterBottom>APIs by day</Typography>
+                      <ResponsiveContainer width={"100%"} height={400}>
+                        <BarChart
+                          data={stats.successfulCountByDays.map(api => ({name: api.date, amt: api.count, count: api.count, "average response time": api.average_response_time}))}
+                          margin={{
+                            top: 5,
+                            right: 30,
+                            left: 20,
+                            bottom: 5,
+                          }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="count" fill="#32a86f" />
+                          <Bar dataKey="average response time" fill="#c9960a" />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </Paper>
+                  </Grid>
+                  
+                  <Grid item xs={6}>
+                    <Paper className={classes.paper}>
+                      <Typography variant="h5" gutterBottom>Most successful</Typography>
+                      <ResponsiveContainer width={"100%"} height={400}>
+                        <BarChart
+                          data={stats.successfulAPIs.map(api => ({name: `${api.method} ${api.baseURL}`, amt: api.count, successful: api.count, avg: api.average_response_time}))}
+                          margin={{
+                            top: 5,
+                            right: 30,
+                            left: 20,
+                            bottom: 5,
+                          }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="successful" fill="#32a86f" />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </Paper>
+                  </Grid>
 
-              <Grid item xs={6}>
-                <Paper className={classes.paper}>
-                  <Typography variant="h5" gutterBottom>Most errors</Typography>
-                  <ResponsiveContainer width={"100%"} height={400}>
-                    <BarChart
-                      data={stats.erroringAPIs.map(api => ({name: `${api.method} ${api.baseURL}`, amt: api.count, errors: api.count}))}
-                      margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                      }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="errors" fill="#a83246" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </Paper>
-              </Grid>
-            </Grid>
-          </Container>
+                  <Grid item xs={6}>
+                    <Paper className={classes.paper}>
+                      <Typography variant="h5" gutterBottom>Most errors</Typography>
+                      <ResponsiveContainer width={"100%"} height={400}>
+                        <BarChart
+                          data={stats.erroringAPIs.map(api => ({name: `${api.method} ${api.baseURL}`, amt: api.count, errors: api.count}))}
+                          margin={{
+                            top: 5,
+                            right: 30,
+                            left: 20,
+                            bottom: 5,
+                          }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="errors" fill="#a83246" />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </Container>
+            :
+              <React.Fragment></React.Fragment>
+          }
         </IsActive>
       </section>
   );
