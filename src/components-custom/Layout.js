@@ -17,6 +17,7 @@ import { useHistory } from 'react-router';
 import MenuIcon from '@material-ui/icons/Menu';
 import AppsIcon from '@material-ui/icons/Apps';
 import DataUsageIcon from '@material-ui/icons/DataUsage';
+import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 
 import { useAuth } from '../App';
 
@@ -109,12 +110,22 @@ export default function Component(props) {
 
         <ListItem button key="Logging" onClick={() => {
           closeDrawer();
-          history.push(`/Logging`);
+          history.push(`/logging`);
         }}>
           <ListItemIcon>
             <DataUsageIcon />
           </ListItemIcon>
           <ListItemText primary="Logging" />
+        </ListItem>
+
+        <ListItem button key="Documentation" onClick={() => {
+          closeDrawer();
+          history.push(`/docs`);
+        }}>
+          <ListItemIcon>
+            <InsertDriveFileOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Documentation" />
         </ListItem>
         
       </List>

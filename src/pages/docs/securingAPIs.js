@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default `
+# Securing your APIs
 
 LogicgooseUI lets you build APIs to call your RPG programs, which really means you need to handle authentication in your programs also.
 

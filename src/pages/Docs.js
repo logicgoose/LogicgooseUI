@@ -11,8 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 
 import { CopyBlock, github } from "react-code-blocks";
 
@@ -20,12 +19,17 @@ import ReactMarkdown from 'react-markdown'
 
 //Doc pages
 import Homepage from './docs/homepage';
+import creatingAPIs from './docs/creatingAPIs';
 import SecuringAPIs from './docs/securingAPIs';
 
 const pages = [
   {
     title: "Homepage",
     content: Homepage
+  },
+  {
+    title: "Creating APIs",
+    content: creatingAPIs
   },
   {
     title: "Securing APIs",
@@ -85,7 +89,7 @@ export default function PermanentDrawerLeft() {
         <List>
           {pages.map((page, index) => (
             <ListItem button key={page.title} onClick={() => {setCurrentPage(index)}}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemIcon><InsertDriveFileOutlinedIcon /></ListItemIcon>
               <ListItemText primary={page.title} />
             </ListItem>
           ))}
