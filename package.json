@@ -16,7 +16,8 @@
     "react-code-blocks": "^0.0.8",
     "react-dom": "latest",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "latest"
+    "react-scripts": "latest",
+    "recharts": "^2.0.9"
   },
   "browserslist": {
     "production": [
