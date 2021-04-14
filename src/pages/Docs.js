@@ -2,18 +2,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Container from '@material-ui/core/Container';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
-
-import { CopyBlock, github } from "react-code-blocks";
 
 import ReactMarkdown from 'react-markdown'
 
@@ -43,10 +37,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  appBar: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-  },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -61,17 +51,24 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(0, 30, 0, 10),
   },
-}));
 
-const renderers = {
-  code: ({language, value}) => {
-    return <CopyBlock text={value} language={language} theme={github} wrapLines />
+  code: {
+    fontSize: '1.2em',
+    padding: theme.spacing(1, 1, 1, 1),
+    whiteSpace: 'pre-wrap',
+    backgroundColor: '#dce6df'
   }
-}
+}));
 
 export default function PermanentDrawerLeft() {
   const classes = useStyles();
   const [currentPage, setCurrentPage] = React.useState(0);
+
+  const renderers = {
+    code: ({language, value}) => {
+      return <pre className={classes.code}>{value}</pre>
+    }
+  }
 
   return (
     <div className={classes.root}>

@@ -19,8 +19,6 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-import { CopyBlock, github } from "react-code-blocks";
-
 import { useAuth } from '../App';
 import { useParams } from 'react-router-dom';
 
@@ -37,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
   },
   code: {
     fontSize: '1.2em',
-    marginRight: '1em'
+    marginRight: '1em',
+    whiteSpace: 'pre-wrap'
   }
 }));
 
@@ -82,7 +81,6 @@ export default function Index() {
         <Container maxWidth="lg">
           <div className={classes.root}>
 
-
             <Typography variant="h5" component="h5" gutterBottom={true}>
               <IconButton className={classes.backButton} onClick={() => history.push(`/projects/${project}`)}>
                 <ArrowBackIcon />
@@ -106,26 +104,16 @@ export default function Index() {
               </Grid>
               <Grid item xs={6}>
                 <Paper className={classes.paper}>
-                  <span className={classes.code}>
-                    <CopyBlock
-                      text={currentAPI.rpgle}
-                      language="text"
-                      theme={github}
-                      wrapLines
-                    />
-                  </span>
+                  <pre className={classes.code}>
+                    {currentAPI.rpgle}
+                  </pre>
                 </Paper>
               </Grid>
               <Grid item xs={6}>
                 <Paper className={classes.paper}>
-                  <span className={classes.code}>
-                    <CopyBlock
-                      text={currentAPI.sql}
-                      language="sql"
-                      theme={github}
-                      wrapLines
-                    />
-                  </span>
+                  <pre className={classes.code}>
+                    {currentAPI.sql}
+                  </pre>
                 </Paper>
               </Grid>
             </Grid>
